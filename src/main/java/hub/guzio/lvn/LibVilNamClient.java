@@ -1,4 +1,4 @@
-package hub.guzio.libvilnam;
+package hub.guzio.lvn;
 
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;

@@ -1,4 +1,4 @@
-package hub.guzio.libvilnam;
+package hub.guzio.lvn;
 
 import java.util.List;
 import java.util.Set;

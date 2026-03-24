@@ -1,4 +1,4 @@
-package hub.guzio.libvilnam;
+package hub.guzio.lvn;
 
 import org.slf4j.Logger;
 

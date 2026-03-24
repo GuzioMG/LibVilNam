@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "hub.guzio.libvilnam.mixin",
+  "package": "hub.guzio.lvn.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [],
   "injectors": {
