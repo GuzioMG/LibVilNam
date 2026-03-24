@@ -1,36 +1,25 @@
 package hub.guzio.lvn.mixin;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
+import hub.guzio.lvn.Main;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.*;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.RandomState;
-import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
-import java.util.Optional;
-import java.util.function.Predicate;
 
 @Mixin(net.minecraft.world.level.chunk.ChunkGenerator.class)
 public class StructureGen {
@@ -50,7 +39,7 @@ public class StructureGen {
         var level = ((StructureManagerLevelAccessor) structureManager).getLevelAccessor();
         var dim = ResourceLocation.fromNamespaceAndPath("minetrix", "unknown");
         if (level instanceof Level) dim = ((Level) level).dimension().location();
-        System.out.println("Generating a new "+ structureSelectionEntry.structure().getRegisteredName() +" at "+worldStructure.getBoundingBox()+" in "+dim);
+        Main.LOGGER.info("Generating a new {} at {} in {}", structureSelectionEntry.structure().getRegisteredName(), worldStructure.getBoundingBox(), dim);
     }
 
     @Shadow
