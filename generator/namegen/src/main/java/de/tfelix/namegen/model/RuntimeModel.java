@@ -1,7 +1,5 @@
 package de.tfelix.namegen.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ibm.icu.util.ULocale;
 
 import java.util.Map;
@@ -18,12 +16,7 @@ public class RuntimeModel<R extends Random> implements Function<R, String> {
     public final Map<String, Transition> transitions;
     public final Transition delimiterTransition;
 
-    public RuntimeModel(
-            int order,
-            ULocale locale,
-            Map<String, Transition> transitions,
-            Transition delimiterTransition
-    ) {
+    public RuntimeModel(int order, ULocale locale, Map<String, Transition> transitions, Transition delimiterTransition) {
         this.language_code = locale.toString();
         this.order = order;
         this.transitions = transitions;
@@ -31,11 +24,7 @@ public class RuntimeModel<R extends Random> implements Function<R, String> {
         this.delimiterTransition = delimiterTransition;
     }
 
-    @JsonCreator
-    public RuntimeModel(@JsonProperty("order") int order,
-                        @JsonProperty("language_code") String language_code,
-                        @JsonProperty("transitions") Map<String, Transition> transitions,
-                        @JsonProperty("delimiterTransition") Transition delimiterTransition) {
+    public RuntimeModel(int order, String language_code, Map<String, Transition> transitions, Transition delimiterTransition) {
         this(order, new ULocale(language_code), transitions, delimiterTransition);
     }
 

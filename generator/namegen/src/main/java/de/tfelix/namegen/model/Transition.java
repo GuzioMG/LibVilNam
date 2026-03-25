@@ -1,7 +1,5 @@
 package de.tfelix.namegen.model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ibm.icu.text.UnicodeSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +18,7 @@ import static com.ibm.icu.util.LocaleData.ES_STANDARD;
  * random by providing a float between 0 and 1.
  * 
  * @author Thomas Felix
- *
- *  todo: break off runtime stuff into a separate class
+ * @author Guzio
  */
 class Transition implements Serializable {
 	private static Logger logger = LoggerFactory.getLogger(Transition.class);
@@ -56,8 +53,7 @@ class Transition implements Serializable {
 		return distribution;
 	}
 
-	@JsonCreator
-	public Transition(@JsonProperty("distribution") Map<Character, Float> distribution) {
+	public Transition(Map<Character, Float> distribution) {
 		// todo: separate interface for runtime transition
 		this.distribution = distribution;
 		this.locale = null;
