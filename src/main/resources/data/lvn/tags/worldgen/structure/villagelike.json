@@ -3,6 +3,11 @@
         "minecraft:pillager_outpost",
         "minecraft:swamp_hut",
         "minecraft:mansion",
-        "minecraft:igloo"
+        "minecraft:igloo",
+
+        "minecraft:fortress",
+        "minecraft:bastion_remnant",
+
+        "minecraft:end_city"
     ]
 }

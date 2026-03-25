@@ -16,6 +16,7 @@ public class API {
     public API(int padding, Logger logger){
         Padding = padding;
         lg = logger;
+        lg.info("[API/<init>] API constructed.");
     }
 
     public boolean testForVillage(String id, RegistryAccess in) {
@@ -34,8 +35,7 @@ public class API {
         }
 
         if (testForVillage(id, registry.get(), ResourceLocation.fromNamespaceAndPath("minecraft", "village"))) return true;
-        else if (testForVillage(id, registry.get(), ResourceLocation.fromNamespaceAndPath("lvn", "villagelike"))) return true;
-        else return false;
+        else return testForVillage(id, registry.get(), ResourceLocation.fromNamespaceAndPath("lvn", "villagelike"));
     }
 
     public boolean testForVillage(ResourceLocation id, Registry<Structure> in, ResourceLocation among) {

@@ -33,6 +33,7 @@ public class Main {
 
         INSTANCE = Optional.of(this);
         LOGGER = LogUtils.getLogger();
+        LOGGER.info("[Main/<init>] Mod constructed.");
     }
 
     public API getAPI(){
@@ -40,13 +41,13 @@ public class Main {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
+        LOGGER.info("[Main/commonSetup] Initializing LibLilNam API...");
         this.API = new API(Config.PADDING.getAsInt(), LOGGER);
+        LOGGER.info("[Main/commonSetup] Ready to name some villages!");
     }
 
     public static Main i(){
-        if (INSTANCE.isEmpty()) throw new IllegalStateException("Attempted to access LibVilNam prior to its initialization.");
+        if (INSTANCE.isEmpty()) throw new IllegalStateException("Attempted to access LibVilNam prior to its construction.");
         else return INSTANCE.get();
     }
 
