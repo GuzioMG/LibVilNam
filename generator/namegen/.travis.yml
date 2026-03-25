@@ -1,0 +1,18 @@
+---
+language: java
+sudo: false
+install: true
+
+# Cache the maven repository to not need to download all dependencies on every build.
+cache:
+  directories:
+  - "$HOME/.m2/repository"
+
+deploy:
+  provider: bintray
+  file: "bintray.json"
+  user: tfelix
+  key: $BINTRAY_API_KEY
+  skip_cleanup: true
+  on:
+    tags: true
