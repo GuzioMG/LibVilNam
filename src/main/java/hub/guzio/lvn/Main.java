@@ -17,7 +17,7 @@ import java.util.Optional;
 public class Main {
     public static final String ID = "lvn";
     private static Optional<Main> INSTANCE = Optional.empty();
-    public final Logger LOGGER;
+    public final Logger L;
     private API API;
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
@@ -32,8 +32,8 @@ public class Main {
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         INSTANCE = Optional.of(this);
-        LOGGER = LogUtils.getLogger();
-        LOGGER.info("[Main/<init>] Mod constructed.");
+        L = LogUtils.getLogger();
+        L.info("[Main/<init>] Mod constructed.");
     }
 
     public API getAPI(){
@@ -41,17 +41,13 @@ public class Main {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        LOGGER.info("[Main/commonSetup] Initializing LibLilNam API...");
-        this.API = new API(Config.PADDING.getAsInt(), LOGGER);
-        LOGGER.info("[Main/commonSetup] Ready to name some villages!");
+        L.info("[Main/commonSetup] Initializing LibLilNam API...");
+        this.API = new API(Config.PADDING.getAsInt(), L);
+        L.info("[Main/commonSetup] Ready to name some villages!");
     }
 
     public static Main i(){
         if (INSTANCE.isEmpty()) throw new IllegalStateException("Attempted to access LibVilNam prior to its construction.");
         else return INSTANCE.get();
-    }
-
-    public static Logger lg(){
-        return i().LOGGER;
     }
 }

@@ -25,21 +25,29 @@ import java.util.Objects;
 public class StructureGen {
     @Inject(at = @At("HEAD"), method = "tryGenerateStructure")
     private void tryGenerateStructure(StructureSet.StructureSelectionEntry structureSelectionEntry, StructureManager structureManager, RegistryAccess registryAccess, RandomState randomState, StructureTemplateManager structureTemplateManager, long l, ChunkAccess chunkAccess, ChunkPos chunkPos, SectionPos sectionPos, CallbackInfoReturnable<Boolean> cir) {
+        //Before even touching anything, let's make sure that the structure we're trying to generate is a village(like) in the 1st place
+        var structure = structureSelectionEntry.structure();
+        var structureId = ResourceLocation.fromNamespaceAndPath("lvn", "null");
+        var instance = Main.i();
+        try { structureId = Objects.requireNonNull(structure.getKey()).location(); }
+            catch (NullPointerException e) { instance.L.error("[mixin:ChunkGenerator/tryGenerateStructure] Got passed in an id-less structure {} (substituted for {}), error details:\n{}", structure, structureId, e); }
+        if(!instance.getAPI().testForVillage(structureId, registryAccess)) return;
+
         //The following code more-or-less mirrors the behavior of tryGenerateStructure and Structure.generate in a single pass, and without actually generating anything
-        var structure = structureSelectionEntry.structure().value();
+        var structureContent = structure.value();
         var that = (ChunkGenerator) (Object) this;
-        var biomes = structure.biomes();
+        var biomes = structureContent.biomes();
         if (Objects.isNull(biomes)) return;
-        var point = structure.findValidGenerationPoint(new Structure.GenerationContext(registryAccess, that, getBiomeSource(), randomState, structureTemplateManager, l, chunkPos, chunkAccess, biomes::contains /*:: gets the function itself as lambda*/));
+        var point = structureContent.findValidGenerationPoint(new Structure.GenerationContext(registryAccess, that, getBiomeSource(), randomState, structureTemplateManager, l, chunkPos, chunkAccess, biomes::contains /*:: gets the function itself as lambda*/));
         if (point.isEmpty()) return;
-        var worldStructure = new StructureStart(structure, chunkPos, fetchReferences(structureManager, chunkAccess, sectionPos, structure), point.get().getPiecesBuilder().build());
+        var worldStructure = new StructureStart(structureContent, chunkPos, fetchReferences(structureManager, chunkAccess, sectionPos, structureContent), point.get().getPiecesBuilder().build());
         if (!worldStructure.isValid()) return;
 
         //Custom code
         var level = ((StructureManagerLevelAccessor) structureManager).getLevelAccessor();
         var dim = ResourceLocation.fromNamespaceAndPath("lvn", "unknown");
         if (level instanceof Level) dim = ((Level) level).dimension().location();
-        if(Main.i().getAPI().testForVillage(structureSelectionEntry.structure().getRegisteredName(), registryAccess)) Main.lg().info("[mixin:ChunkGenerator/tryGenerateStructure] Generating a new {} at {} in {}", structureSelectionEntry.structure().getRegisteredName(), worldStructure.getBoundingBox(), dim);
+        instance.L.info("[mixin:ChunkGenerator/tryGenerateStructure] Generating a new {} at {} in {}", structureSelectionEntry.structure().getRegisteredName(), worldStructure.getBoundingBox(), dim);
     }
 
     @Shadow

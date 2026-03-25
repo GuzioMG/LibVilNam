@@ -19,14 +19,6 @@ public class API {
         lg.info("[API/<init>] API constructed.");
     }
 
-    public boolean testForVillage(String id, RegistryAccess in) {
-        try { return testForVillage(ResourceLocation.parse(id), in); }
-        catch (ResourceLocationException e) {
-            lg.error("[API/testForVillage] Tested for a malformatted structure ID:", e);
-            return false;
-        }
-    }
-
     public boolean testForVillage(ResourceLocation id, RegistryAccess in) {
         var registry = in.registry(Registries.STRUCTURE);
         if (registry.isEmpty()){
@@ -34,17 +26,17 @@ public class API {
             return false;
         }
 
-        if (testForVillage(id, registry.get(), ResourceLocation.fromNamespaceAndPath("minecraft", "village"))) return true;
-        else return testForVillage(id, registry.get(), ResourceLocation.fromNamespaceAndPath("lvn", "villagelike"));
+        if (testForStructure(id, registry.get(), ResourceLocation.fromNamespaceAndPath("minecraft", "village"))) return true;
+        else return testForStructure(id, registry.get(), ResourceLocation.fromNamespaceAndPath("lvn", "villagelike"));
     }
 
-    public boolean testForVillage(ResourceLocation id, Registry<Structure> in, ResourceLocation among) {
-        var searchspace = in.getTag(TagKey.create(in.key(), among));
+    public boolean testForStructure(ResourceLocation structureId, Registry<Structure> in, ResourceLocation tagId) {
+        var searchspace = in.getTag(TagKey.create(in.key(), tagId));
 
         if (searchspace.isPresent()) {
-            for (var holder : searchspace.get()) if (holder.is(id)) return true;
+            for (var holder : searchspace.get()) if (holder.is(structureId)) return true;
         }
-        else lg.warn("[API/testForVillage] Won't find anything; the searchspace is empty!");
+        else lg.warn("[API/testForStructure] Won't find anything; the searchspace is empty!");
 
         return false;
     }
