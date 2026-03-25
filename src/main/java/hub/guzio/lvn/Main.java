@@ -42,7 +42,7 @@ public class Main {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         L.info("[Main/commonSetup] Initializing LibLilNam API...");
-        this.API = new API(Config.PADDING.getAsInt(), L);
+        this.API = new API(Config.PADDING.getAsInt(), Config.DO_VILLAGELIKE.getAsBoolean(), L);
         L.info("[Main/commonSetup] Ready to name some villages!");
     }
 

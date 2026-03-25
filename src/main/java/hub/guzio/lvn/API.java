@@ -11,10 +11,12 @@ import org.slf4j.Logger;
 
 public class API {
     private final int Padding;
+    private final boolean DoVillagelike;
     private final Logger lg;
 
-    public API(int padding, Logger logger){
+    public API(int padding, boolean doVillagelike, Logger logger){
         Padding = padding;
+        DoVillagelike = doVillagelike;
         lg = logger;
         lg.info("[API/<init>] API constructed.");
     }
@@ -27,7 +29,7 @@ public class API {
         }
 
         if (testForStructure(id, registry.get(), ResourceLocation.fromNamespaceAndPath("minecraft", "village"))) return true;
-        else return testForStructure(id, registry.get(), ResourceLocation.fromNamespaceAndPath("lvn", "villagelike"));
+        else return DoVillagelike&&testForStructure(id, registry.get(), ResourceLocation.fromNamespaceAndPath("lvn", "villagelike"));
     }
 
     public boolean testForStructure(ResourceLocation structureId, Registry<Structure> in, ResourceLocation tagId) {
