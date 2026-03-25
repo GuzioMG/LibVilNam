@@ -44,13 +44,7 @@ public class StructureGen {
         var level = ((StructureManagerLevelAccessor) structureManager).getLevelAccessor();
         var dim = ResourceLocation.fromNamespaceAndPath("lvn", "unknown");
         if (level instanceof Level) dim = ((Level) level).dimension().location();
-        if(Main.i().getAPI().testForVillage(structureSelectionEntry.structure().getRegisteredName(), registryAccess)) Main.lg().info("Generating a new {} at {} in {}", structureSelectionEntry.structure().getRegisteredName(), worldStructure.getBoundingBox(), dim);
-
-        //This is just my personal scratch-pad (was trying to untangle the over-functionalized spaghetti behind LocateCommand.getHolders() to find out how we unwrap a tag into a list of IDs)
-        if(true) return; ResourceOrTagKeyArgument.Result<Structure> structuree = null; Registry<Structure> structureRegistry = null;
-        structuree.unwrap().map((key -> {
-            return structureRegistry.getHolder(key).map(HolderSet::direct); //This mess converts a single structure to an optional set
-        }), structureRegistry::getTag); //...And this is just a direct tag->Optional<Set> conversion (aka what I was actually looking for)
+        if(Main.i().getAPI().testForVillage(structureSelectionEntry.structure().getRegisteredName(), registryAccess)) Main.lg().info("[mixin:ChunkGenerator/tryGenerateStructure] Generating a new {} at {} in {}", structureSelectionEntry.structure().getRegisteredName(), worldStructure.getBoundingBox(), dim);
     }
 
     @Shadow
