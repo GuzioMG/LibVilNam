@@ -1,6 +1,6 @@
 package hub.guzio.lvn.mixin;
 
-import hub.guzio.lvn.Main;
+import hub.guzio.lvn.internal.Main;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
 import net.minecraft.resources.ResourceLocation;

@@ -1,4 +1,4 @@
-package hub.guzio.lvn;
+package hub.guzio.lvn.internal;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 

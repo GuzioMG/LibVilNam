@@ -1,5 +1,6 @@
-package hub.guzio.lvn;
+package hub.guzio.lvn.internal;
 
+import hub.guzio.lvn.API;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
