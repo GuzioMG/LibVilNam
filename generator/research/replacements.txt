@@ -1,0 +1,49 @@
+$\ \
+
+ul.$ Ulica$
+pl.$ Plac$
+al.$ Aleja$
+ul. Ulica$
+pl. Plac$
+al. Aleja$
+X x
+V x
+I\ \ #Case-sensitive
+keep running until nothing found
+0 x
+1 x
+2 x
+3 x
+4 x
+5 x
+6 x
+7 x
+8 x
+9 x
+
+\\ \
+-lecie Lecia
+sko- skie\
+$-$ \
+- $
+. $
+$$ $
+$\ \ #In the main doc, I said this came after the \\ \ step, but I forgot to actually do it then, so it got pushed to the second-to-last.
+\$ \
+""$" " #There was one Very Special Snowflake of a streetname that needed this particular processing
+" x
+$ \
+
+skim\ ski\
+wski\ w\
+rski\ r\
+jski\ j\
+ski\ sk\ #This has the potential to be ultra-destructive, so I made a backup (stage3_preski) before running this step
+cki\ c\
+dzki\ dzk\
+rskie\ rze\
+wskie\ w\
+kie\ k\
+go\ \
+ci\ ć\
+iu\ ie\
