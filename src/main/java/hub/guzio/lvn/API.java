@@ -6,6 +6,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import org.slf4j.Logger;
 
@@ -19,6 +20,10 @@ public class API {
         DoVillagelike = doVillagelike;
         lg = logger;
         lg.info("[API/<init>] API constructed.");
+    }
+
+    public VillageNotifyResult villageNotify(ResourceLocation villageTypeId, BoundingBox locationXYZ, ResourceLocation locationDimensionId){
+
     }
 
     public boolean testForVillage(ResourceLocation id, RegistryAccess in) {
