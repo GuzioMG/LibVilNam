@@ -1,8 +1,13 @@
 package hub.guzio.lvn.mixin;
 
+import hub.guzio.lvn.API;
 import hub.guzio.lvn.Main;
+import net.minecraft.commands.arguments.ResourceOrTagKeyArgument;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.*;
 import net.minecraft.world.level.biome.BiomeSource;
@@ -21,7 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Objects;
 
-@Mixin(net.minecraft.world.level.chunk.ChunkGenerator.class)
+@Mixin(ChunkGenerator.class)
 public class StructureGen {
     @Inject(at = @At("HEAD"), method = "tryGenerateStructure")
     private void tryGenerateStructure(StructureSet.StructureSelectionEntry structureSelectionEntry, StructureManager structureManager, RegistryAccess registryAccess, RandomState randomState, StructureTemplateManager structureTemplateManager, long l, ChunkAccess chunkAccess, ChunkPos chunkPos, SectionPos sectionPos, CallbackInfoReturnable<Boolean> cir) {
@@ -37,9 +42,9 @@ public class StructureGen {
 
         //Custom code
         var level = ((StructureManagerLevelAccessor) structureManager).getLevelAccessor();
-        var dim = ResourceLocation.fromNamespaceAndPath("minetrix", "unknown");
+        var dim = ResourceLocation.fromNamespaceAndPath("lvn", "unknown");
         if (level instanceof Level) dim = ((Level) level).dimension().location();
-        Main.LOGGER.info("Generating a new {} at {} in {}", structureSelectionEntry.structure().getRegisteredName(), worldStructure.getBoundingBox(), dim);
+        if(Main.i().getAPI().testForVillage(structureSelectionEntry.structure().getRegisteredName(), registryAccess)) Main.lg().info("Generating a new {} at {} in {}", structureSelectionEntry.structure().getRegisteredName(), worldStructure.getBoundingBox(), dim);
 
         //This is just my personal scratch-pad (was trying to untangle the over-functionalized spaghetti behind LocateCommand.getHolders() to find out how we unwrap a tag into a list of IDs)
         if(true) return; ResourceOrTagKeyArgument.Result<Structure> structuree = null; Registry<Structure> structureRegistry = null;
