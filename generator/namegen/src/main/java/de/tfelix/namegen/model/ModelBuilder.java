@@ -1,9 +1,6 @@
-package de.tfelix.namegen;
+package de.tfelix.namegen.model;
 
 import com.ibm.icu.util.ULocale;
-import de.tfelix.namegen.model.MarkovModel;
-import de.tfelix.namegen.model.RuntimeModel;
-import de.tfelix.namegen.model.TrainableModel;
 import org.slf4j.Logger;
 
 import java.util.Random;
@@ -19,7 +16,7 @@ import java.util.Random;
  * @author Thomas Felix
  * @author Guzio
  */
-public class NameGenGenerator<R extends Random> {
+public class ModelBuilder<R extends Random> {
     private final TrainableModel<R> trainableModel;
     private final ULocale locale;
 
@@ -39,7 +36,7 @@ public class NameGenGenerator<R extends Random> {
      * @param locale      The locale to use for generating letters that were not seen in
      *                    the training set.
      */
-    public NameGenGenerator(int maxOrder, float prior, float katzBackoff, ULocale locale, Logger logger) {
+    public ModelBuilder(int maxOrder, float prior, float katzBackoff, ULocale locale, Logger logger) {
         if (maxOrder < 1 || maxOrder > 10) {
             throw new IllegalArgumentException("Order must be between 1 and 10.");
         }
@@ -52,7 +49,7 @@ public class NameGenGenerator<R extends Random> {
             throw new IllegalArgumentException("KatzBackoff must be bigger then 0.");
         }
 
-        this.trainableModel = new MarkovModel<R>(maxOrder, prior, locale, logger);
+        this.trainableModel = new MarkovModel<>(maxOrder, prior, locale, logger);
         this.locale = locale;
     }
 
@@ -60,13 +57,15 @@ public class NameGenGenerator<R extends Random> {
      * Adds the specified word(s) to this chain's training data. Can be called multiple times to add many words.
      * 
      * @param spaceSeparated A string containing either one word to train on, or multiple words, each space-separated.
+     * @return self
      */
-    public void from(String spaceSeparated){
+    public ModelBuilder<R> from(String spaceSeparated){
         var data = spaceSeparated.split(" ");
         for (var entry : data) trainableModel.update(entry.trim().toLowerCase(locale.toLocale()));
+        return this;
     }
 
-    RuntimeModel<R> build() {
+    public RuntimeModel<R> build() {
         return this.trainableModel.build();
     }
 }

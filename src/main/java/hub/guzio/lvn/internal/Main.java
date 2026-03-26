@@ -24,7 +24,9 @@ public class Main {
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public Main(IEventBus modEventBus, ModContainer modContainer) {
-        if (INSTANCE.isPresent()) throw new IllegalStateException("Attempted to re-initialize an already-started LibVilNam.");
+        L = LogUtils.getLogger();
+        L.info("[Main/<init>] Constructing LibVilNam...");
+        if (INSTANCE.isPresent()) throw new IllegalStateException("Attempted to re-initialize an already-started LibVilNam!");
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
@@ -33,7 +35,6 @@ public class Main {
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         INSTANCE = Optional.of(this);
-        L = LogUtils.getLogger();
         L.info("[Main/<init>] Mod constructed.");
     }
 
@@ -43,7 +44,7 @@ public class Main {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         L.info("[Main/commonSetup] Initializing LibLilNam API...");
-        this.API = new API(Config.PADDING.getAsInt(), Config.DO_VILLAGELIKE.getAsBoolean(), L);
+        this.API = new API(Config.PADDING.getAsInt(), Config.DO_VILLAGELIKE.getAsBoolean(), Config.DATASET.get(), Config.LANG.get(), L);
         L.info("[Main/commonSetup] Ready to name some villages!");
     }
 

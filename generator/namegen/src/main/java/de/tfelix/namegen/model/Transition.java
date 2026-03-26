@@ -77,7 +77,7 @@ public class Transition implements Serializable {
 			/* Observations need to be scaled so that the probability across the alphabet sums to 1.0 */
 			observationRange = (1.0f - priorProbability * alphabet.size());
 			if (observationRange < 0.0) {
-				logger.warn("The prior probability was meant to be the chance that any available letter would occur. By specifying a probability of {} with {} letters in the alphabet means that there's no room in the probability distribution to adjust for the letters that are more likely.", priorProbability, alphabet.size());
+				logger.warn("[Markov:Transition/build] The prior probability was meant to be the chance that any available letter would occur. By specifying a probability of {} with {} letters in the alphabet means that there's no room in the probability distribution to adjust for the letters that are more likely.", priorProbability, alphabet.size());
 				// Set a default prior − the show must go on
 				priorProbability = 1.0f / (2.0f*alphabet.size());
 				observationRange = 0.5f;  // Half of our outputs will be influenced by the observations

@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Guzio
  *
  */
-public record NameGen<R extends Random>(R random, RuntimeModel<R> generator) {
+public record MarkovChain<R extends Random>(R random, RuntimeModel<R> generator) {
 	/**
 	 * Returns a new name, based on the learned model file. Unlike most toString() you encounter in Java, this one will - by definition - give you a different result each time.
 	 * 

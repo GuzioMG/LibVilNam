@@ -13,6 +13,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,7 +25,7 @@ import java.util.Objects;
 @Mixin(ChunkGenerator.class)
 public class StructureGen {
     @Inject(at = @At("HEAD"), method = "tryGenerateStructure")
-    private void tryGenerateStructure(StructureSet.StructureSelectionEntry structureSelectionEntry, StructureManager structureManager, RegistryAccess registryAccess, RandomState randomState, StructureTemplateManager structureTemplateManager, long l, ChunkAccess chunkAccess, ChunkPos chunkPos, SectionPos sectionPos, CallbackInfoReturnable<Boolean> cir) {
+    private void tryGenerateStructure(@NotNull StructureSet.StructureSelectionEntry structureSelectionEntry, StructureManager structureManager, RegistryAccess registryAccess, RandomState randomState, StructureTemplateManager structureTemplateManager, long l, ChunkAccess chunkAccess, ChunkPos chunkPos, SectionPos sectionPos, CallbackInfoReturnable<Boolean> cir) {
         //Before even touching anything, let's make sure that the structure we're trying to generate is a village(like) in the 1st place
         var structure = structureSelectionEntry.structure();
         var structureId = ResourceLocation.fromNamespaceAndPath("lvn", "null");
@@ -47,16 +48,13 @@ public class StructureGen {
         var level = ((StructureManagerLevelAccessor) structureManager).getLevelAccessor();
         var dim = ResourceLocation.fromNamespaceAndPath("lvn", "unknown");
         if (level instanceof Level) dim = ((Level) level).dimension().location();
-        instance.L.info("[mixin:ChunkGenerator/tryGenerateStructure] Generating a new {} at {} in {}", structureSelectionEntry.structure().getRegisteredName(), worldStructure.getBoundingBox(), dim);
+        var village = instance.getAPI().placeVillage(structureId, worldStructure.getBoundingBox(), dim);
+        instance.L.info("[mixin:ChunkGenerator/tryGenerateStructure] Generating a new {} called „{}” at {} (normalized to {}) in {}", structureId, village.name(), worldStructure.getBoundingBox(), village.locationXYZ(), dim);
     }
 
     @Shadow
-    private static int fetchReferences(StructureManager structureManager, ChunkAccess chunkAccess, SectionPos sectionPos, Structure structure) {
-        return 0;
-    }
+    private static int fetchReferences(StructureManager structureManager, ChunkAccess chunkAccess, SectionPos sectionPos, Structure structure) { return 0; }
 
     @Shadow
-    public BiomeSource getBiomeSource() {
-        return null;
-    }
+    public BiomeSource getBiomeSource() { return null; }
 }
