@@ -1,20 +1,21 @@
 package de.tfelix.namegen.model;
 
 import com.ibm.icu.util.ULocale;
+import org.slf4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
- * The model contains all the data to encode a simple markov graph in order to
+ * The model contains all the data to encode a simple Markov graph in order to
  * generate names.
  * 
  * @author Thomas Felix
+ * @author Guzio
  *
  */
-public class MarkovModel implements TrainableModel {
-
-    private static final long serialVersionUID = 1L;
+public class MarkovModel<R extends Random> implements TrainableModel<R> {
 
     private final int order;
     private final float prior;
@@ -22,10 +23,11 @@ public class MarkovModel implements TrainableModel {
     private final char postfix;
     private final ULocale locale;
     private final Map<String, Transition> transitions;
+    private final Logger logger;
 
     /**
      * Creates a new Markov model. The order is how many characters are taken
-     * into account for creating depending probabilities. It should be between 1
+     * into account for creating dependant probabilities. It should be between 1
      * and 10 (inclusive). The prior value can be used to make the model not so
      * depending on the learning data but gets more random. Usually the values
      * should be quite low, between 0 and maybe 0.1. Can be less if there is
@@ -38,7 +40,7 @@ public class MarkovModel implements TrainableModel {
      *               the observations.
      * @param locale The locale to use for generating letters that were not seen in the training set.
      */
-    public MarkovModel(int order, float prior, ULocale locale) {
+    public MarkovModel(int order, float prior, ULocale locale, Logger logger) {
         if (order < 1 || order > 10) {
             throw new IllegalArgumentException("Order must be between 1 and 10.");
         }
@@ -53,11 +55,10 @@ public class MarkovModel implements TrainableModel {
         this.postfix = SymbolManager.getEndSymbol();
         this.locale = locale;
         this.transitions = new HashMap<>();
+        this.logger = logger;
     }
 
-    /*
-     * (non-Javadoc)
-     *
+    /**
      * @see de.tfelix.namegen.model.TrainableModel#update(java.lang.String)
      */
     @Override
@@ -71,7 +72,7 @@ public class MarkovModel implements TrainableModel {
                 if (this.transitions.containsKey(subContext)) {
                     transitions.get(subContext).update(output);
                 } else {
-                    Transition transition = new Transition(this.prior, locale);
+                    Transition transition = new Transition(this.prior, locale, logger);
                     transition.update(output);
                     transitions.put(subContext, transition);
                 }
@@ -80,14 +81,14 @@ public class MarkovModel implements TrainableModel {
     }
 
     @Override
-    public RuntimeModel build() {
+    public RuntimeModel<R> build() {
         Map<String, Transition> builtTransitions = new HashMap<>();
         for (String key : transitions.keySet()) {
             builtTransitions.put(key, transitions.get(key).build());
         }
-        Transition transition = new Transition(0f, locale);
+        Transition transition = new Transition(0f, locale, logger);
         transition.update(this.postfix);
         Transition delimiterTransition = transition.build();
-        return new RuntimeModel(this.order, this.locale, builtTransitions, delimiterTransition);
+        return new RuntimeModel<>(this.order, this.locale, builtTransitions, delimiterTransition);
     }
 }

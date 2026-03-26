@@ -4,6 +4,9 @@ import com.ibm.icu.util.ULocale;
 import de.tfelix.namegen.model.MarkovModel;
 import de.tfelix.namegen.model.RuntimeModel;
 import de.tfelix.namegen.model.TrainableModel;
+import org.slf4j.Logger;
+
+import java.util.Random;
 
 /**
  * Use this class to train a model based on a simple text file containing a list
@@ -16,9 +19,9 @@ import de.tfelix.namegen.model.TrainableModel;
  * @author Thomas Felix
  * @author Guzio
  */
-public class NameGenGenerator {
-
-    private final TrainableModel trainableModel;
+public class NameGenGenerator<R extends Random> {
+    private final TrainableModel<R> trainableModel;
+    private final ULocale locale;
 
     /**
      * Ctor.
@@ -36,7 +39,7 @@ public class NameGenGenerator {
      * @param locale      The locale to use for generating letters that were not seen in
      *                    the training set.
      */
-    public NameGenGenerator(int maxOrder, float prior, float katzBackoff, ULocale locale) {
+    public NameGenGenerator(int maxOrder, float prior, float katzBackoff, ULocale locale, Logger logger) {
         if (maxOrder < 1 || maxOrder > 10) {
             throw new IllegalArgumentException("Order must be between 1 and 10.");
         }
@@ -49,10 +52,21 @@ public class NameGenGenerator {
             throw new IllegalArgumentException("KatzBackoff must be bigger then 0.");
         }
 
-        this.trainableModel = new MarkovModel(maxOrder, prior, locale);
+        this.trainableModel = new MarkovModel<R>(maxOrder, prior, locale, logger);
+        this.locale = locale;
     }
 
-    RuntimeModel build() {
+    /**
+     * Adds the specified word(s) to this chain's training data. Can be called multiple times to add many words.
+     * 
+     * @param spaceSeparated A string containing either one word to train on, or multiple words, each space-separated.
+     */
+    public void from(String spaceSeparated){
+        var data = spaceSeparated.split(" ");
+        for (var entry : data) trainableModel.update(entry.trim().toLowerCase(locale.toLocale()));
+    }
+
+    RuntimeModel<R> build() {
         return this.trainableModel.build();
     }
 }

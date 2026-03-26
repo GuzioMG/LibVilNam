@@ -6,26 +6,25 @@ import java.util.Map;
 import java.util.Random;
 import java.util.function.Function;
 
+/**
+ * The model contains all the data to encode a simple markov graph in order to
+ * generate names.
+ *
+ * @author Thomas Felix
+ * @author Guzio
+ *
+ */
 public class RuntimeModel<R extends Random> implements Function<R, String> {
-    /**
-     * JSON serialization requires properties to be public :(
-     */
-    public final int order;
-    public String language_code;
+    private final int order;
     private final String prefix;
-    public final Map<String, Transition> transitions;
-    public final Transition delimiterTransition;
+    private final Map<String, Transition> transitions;
+    private final Transition delimiterTransition;
 
     public RuntimeModel(int order, ULocale locale, Map<String, Transition> transitions, Transition delimiterTransition) {
-        this.language_code = locale.toString();
         this.order = order;
         this.transitions = transitions;
         this.prefix = SymbolManager.getStartSymbol(order);
         this.delimiterTransition = delimiterTransition;
-    }
-
-    public RuntimeModel(int order, String language_code, Map<String, Transition> transitions, Transition delimiterTransition) {
-        this(order, new ULocale(language_code), transitions, delimiterTransition);
     }
 
     /**
@@ -52,10 +51,10 @@ public class RuntimeModel<R extends Random> implements Function<R, String> {
         return context;
     }
 
+    /**
+     * Get a Transition for this context
+     */
     private Transition getTransition(String context) {
-        /**
-         * Get a Transition for this context
-         */
         if (!transitions.containsKey(context)) {
             return delimiterTransition;
         }
@@ -79,7 +78,7 @@ public class RuntimeModel<R extends Random> implements Function<R, String> {
     /**
      * Generate a random name from the model which was previously generated.
      *
-     * @param rand A instance of a random number generator.
+     * @param rand An instance of a random number generator.
      * @return A generated name from the model.
      * @throws RuntimeException if the model hasn't yet been built
      */

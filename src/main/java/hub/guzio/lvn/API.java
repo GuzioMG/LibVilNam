@@ -1,6 +1,5 @@
 package hub.guzio.lvn;
 
-import net.minecraft.ResourceLocationException;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;

@@ -1,22 +1,22 @@
 package de.tfelix.namegen.model;
 
-import java.io.Serializable;
+import java.util.Random;
 
 /**
  * A model containing the descriptive information in order to create new names
  * from it. The model must be serializable so it can be written to a file.
  * 
  * @author Thomas Felix
+ * @author Guzio
  *
  */
-public interface TrainableModel extends Serializable {
+public interface TrainableModel<R extends Random> {
 
 	/**
 	 * Updates the model with new information which is contained in the given
 	 * string.
 	 * 
-	 * @param line
-	 *            A new name to be included into the models description.
+	 * @param line A new name to be included into the model's description.
 	 */
 	void update(String line);
 
@@ -25,6 +25,5 @@ public interface TrainableModel extends Serializable {
      * before any subsequent calls to generate().
      * @return A Learner instance
      */
-	RuntimeModel build();
-
+	RuntimeModel<R> build();
 }

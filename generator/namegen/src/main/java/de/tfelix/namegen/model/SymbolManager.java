@@ -5,18 +5,20 @@ package de.tfelix.namegen.model;
  * access it from different locations.
  * 
  * @author Thomas Felix
+ * @author Guzio
  *
  */
 final class SymbolManager {
 
-    // We need a delimiter that will not be seen in our training data or our chosen alphabet
+    /**
+	 * We need a delimiter that will not be seen in our training data or our chosen alphabet
+     */
 	private final static Character DELIMITER = '✎';
 
 	/**
 	 * Start symbol of the tokens of the given order.
 	 * 
-	 * @param order
-	 *            The order to get the start symbol for.
+	 * @param order The order to get the start symbol for.
 	 * @return The start symbol.
 	 */
 	public static String getStartSymbol(int order) {
