@@ -1,6 +1,7 @@
 package hub.guzio.lvn.internal;
 
 import hub.guzio.lvn.API;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -18,8 +19,9 @@ import java.util.Optional;
 public class Main {
     public static final String ID = "lvn";
     private static Optional<Main> INSTANCE = Optional.empty();
+
     public final Logger L;
-    private API API;
+    private Optional<API> API;
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
@@ -38,18 +40,19 @@ public class Main {
         L.info("[Main/<init>] Mod constructed.");
     }
 
-    public API getAPI(){
-        return API;
-    }
-
     private void commonSetup(FMLCommonSetupEvent event) {
         L.info("[Main/commonSetup] Initializing LibLilNam API...");
-        this.API = new API(Config.PADDING.getAsInt(), Config.DO_VILLAGELIKE.getAsBoolean(), Config.DATASET.get(), Config.LANG.get(), L);
+        this.API = Optional.of(new API(Config.PADDING.getAsInt(), Config.DO_VILLAGELIKE.getAsBoolean(), Config.DATASET.get(), Config.LANG.get(), L));
         L.info("[Main/commonSetup] Ready to name some villages!");
     }
 
-    public static Main i(){
+    public static @NotNull Main i(){
         if (INSTANCE.isEmpty()) throw new IllegalStateException("Attempted to access LibVilNam prior to its construction.");
         else return INSTANCE.get();
+    }
+
+    public @NotNull API getAPI(){
+        if (API.isEmpty()) throw new IllegalStateException("Attempted to access LibVilNam's API prior to its construction.");
+        return API.get();
     }
 }
