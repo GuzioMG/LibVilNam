@@ -28,7 +28,7 @@ public class StructureGen {
     private void tryGenerateStructure(@NotNull StructureSet.StructureSelectionEntry structureSelectionEntry, StructureManager structureManager, RegistryAccess registryAccess, RandomState randomState, StructureTemplateManager structureTemplateManager, long l, ChunkAccess chunkAccess, ChunkPos chunkPos, SectionPos sectionPos, CallbackInfoReturnable<Boolean> cir) {
         //Before even touching anything, let's make sure that the structure we're trying to generate is a village(like) in the 1st place
         var structure = structureSelectionEntry.structure();
-        var structureId = ResourceLocation.fromNamespaceAndPath("lvn", "null");
+        var structureId = ResourceLocation.fromNamespaceAndPath(Main.ID, "null");
         var instance = Main.i();
         try { structureId = Objects.requireNonNull(structure.getKey()).location(); }
             catch (NullPointerException e) { instance.L.error("[mixin:ChunkGenerator/tryGenerateStructure] Got passed in an id-less structure {} (substituted for {}), error details:\n{}", structure, structureId, e); }
@@ -46,10 +46,10 @@ public class StructureGen {
 
         //Custom code
         var level = ((StructureManagerLevelAccessor) structureManager).getLevelAccessor();
-        var dim = ResourceLocation.fromNamespaceAndPath("lvn", "unknown");
+        var dim = ResourceLocation.fromNamespaceAndPath(Main.ID, "unknown");
         if (level instanceof Level) dim = ((Level) level).dimension().location();
         var village = instance.getAPI().placeVillage(structureId, worldStructure.getBoundingBox(), dim);
-        instance.L.info("[mixin:ChunkGenerator/tryGenerateStructure] Generating a new {} called „{}” at {} (normalized to {}) in {}", structureId, village.name(), worldStructure.getBoundingBox(), village.locationXYZ(), dim);
+        instance.L.info("[mixin:ChunkGenerator/tryGenerateStructure] Generating a new {} called „{}” at {} (normalized to {}) in {}", village.villageTypeId(), village.name(), worldStructure.getBoundingBox(), village.locationXYZ(), dim);
     }
 
     @Shadow
