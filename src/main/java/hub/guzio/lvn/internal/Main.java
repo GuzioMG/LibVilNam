@@ -21,7 +21,7 @@ public class Main {
     private static Optional<Main> INSTANCE = Optional.empty();
 
     public final Logger L;
-    private Optional<API> API;
+    private Optional<StatefulAPI> API;
 
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
@@ -42,7 +42,7 @@ public class Main {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         L.info("[Main/commonSetup] Initializing LibLilNam API...");
-        this.API = Optional.of(new API(Config.PADDING.getAsInt(), Config.DO_VILLAGELIKE.getAsBoolean(), Config.DATASET.get(), Config.LANG.get(), L));
+        this.API = Optional.of(new StatefulAPI(Config.PADDING.getAsInt(), Config.DO_VILLAGELIKE.getAsBoolean(), Config.DATASET.get(), Config.LANG.get(), L));
         L.info("[Main/commonSetup] Ready to name some villages!");
     }
 
@@ -53,6 +53,11 @@ public class Main {
 
     public @NotNull API getAPI(){
         if (API.isEmpty()) throw new IllegalStateException("Attempted to access LibVilNam's API prior to its construction.");
+        return API.get();
+    }
+
+    public @NotNull SaveState getSaves(){
+        if (API.isEmpty()) throw new IllegalStateException("Attempted to access LibVilNam API'S save system prior to the API's construction.");
         return API.get();
     }
 }
