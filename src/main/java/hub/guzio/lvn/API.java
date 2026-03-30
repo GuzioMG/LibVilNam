@@ -87,7 +87,33 @@ public class API {
         }
         else{
             //Time to cry: got a Clusterfuck Area [TM]
-            throw new UnsupportedOperationException("...Yea, I can't be bothered with this today; sorry."); //TODO: implement
+            StringBuilder name = new StringBuilder();
+            index = 1;
+            Optional<Village> newVillage = Optional.empty();
+            var type = village.villageTypeId();
+            for (var vil : villagesToConquer){
+                name.append(vil.name());
+                var localIndex = villages.indexOf(vil);
+                var notLast = (index != villagesToConquer.size());
+                if (!Objects.equals(type, vil.villageTypeId())) type = ResourceLocation.fromNamespaceAndPath(Main.ID, "mixed");
+
+                if (localIndex == -1){
+                    lg.warn("{} was supposed to be merged into a cluster of villages, but it apparently doesn't even exist? Idk, weird. Skipping it, at any rate...", vil);
+                    if (notLast) continue;
+                    lg.error("...Nevermind! It's also the LAST village of said cluster, so it can't be skipped, as the merge depends on it. Crashing instead...");
+                    throw new IllegalStateException("Encountered a non-existent village during a merge!");
+                }
+
+                if (notLast) name.append("-");
+                else newVillage = Optional.of(new Village(name.toString(), type, combinedBounds, dim));
+
+                updateVillageUNSAFELY(vil, newVillage, villages, localIndex, villagesToConquer);
+                index++;
+            }
+
+            var abortedVillage = new Village(normalize(village.name()), village.villageTypeId(), selfBounds, dim);
+            lg.info("[API/placeVillage] Placing a new {} on top on {} already existing villages -> Instead, the old villages will eat it and form a new {} to replace both all the old villages, and the new one.", abortedVillage, villagesToConquer.size(), newVillage.orElseThrow());
+            return newVillage.orElseThrow();
         }
     }
 
