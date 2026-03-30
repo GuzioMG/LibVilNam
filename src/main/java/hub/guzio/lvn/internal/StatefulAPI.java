@@ -22,7 +22,7 @@ class StatefulAPI extends API implements SaveState {
     StatefulAPI(int padding, boolean doVillagelike, @NotNull String dataset, @NotNull String langCode, @NotNull Logger logger) {
         super(padding, doVillagelike, dataset, langCode, logger);
         L = logger;
-        L.info("[StatefulAPI/<init>] Upstream constructed; nothing to do downstream.");
+        L.info("[StatefulAPI/_] Upstream constructed; nothing to do downstream.");
     }
 
     @Override

@@ -31,22 +31,22 @@ public class API {
     @NotNull protected Map<ResourceLocation, List<Village>> villages;
 
     public API(int padding, boolean doVillagelike, @NotNull String dataset, @NotNull String langCode, @NotNull Logger logger) {
-        logger.info("[API/<init>] Setting simple params...");
+        logger.info("[API/_] Setting simple params...");
         this.doVillagelike = doVillagelike;
         lg = logger;
         expansion = CHUNK*padding;
 
-        logger.info("[API/<init>] Computing language data...");
+        logger.info("[API/_] Computing language data...");
         var lang = ULocale.forLanguageTag(langCode);
         this.lang = lang.toLocale();
 
-        logger.info("[API/<init>] Building a new Markov Chain...");
+        logger.info("[API/_] Building a new Markov Chain...");
         markov = new MarkovChain<>(new Random(), new ModelBuilder<>(3, 0, 0, lang, logger).from(dataset).build());
 
-        logger.info("[API/<init>] Loading up an initial state...");
+        logger.info("[API/_] Loading up an initial state...");
         villages = new ConcurrentHashMap<>(); //Has to be concurrent to account for mods like Async, DimThread, or C2ME, which may try to generate multiple villages at once on different threads.
 
-        lg.info("[API/<init>] API constructed!");
+        lg.info("[API/_] API constructed!");
     }
 
 

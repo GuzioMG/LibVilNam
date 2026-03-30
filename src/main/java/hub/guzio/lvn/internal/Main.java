@@ -27,7 +27,7 @@ public class Main {
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public Main(IEventBus modEventBus, ModContainer modContainer) {
         L = LogUtils.getLogger();
-        L.info("[Main/<init>] Constructing LibVilNam...");
+        L.info("[Main/_] Constructing LibVilNam...");
         if (INSTANCE.isPresent()) throw new IllegalStateException("Attempted to re-initialize an already-started LibVilNam!");
 
         // Register the commonSetup method for modloading
@@ -37,7 +37,7 @@ public class Main {
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
 
         INSTANCE = Optional.of(this);
-        L.info("[Main/<init>] Mod constructed.");
+        L.info("[Main/_] Mod constructed.");
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
