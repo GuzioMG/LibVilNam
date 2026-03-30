@@ -21,9 +21,9 @@ public class Lifecycle {
         var i = Main.i();
         i.L.info("[mixin:MinecraftServer/createLevels] Got a create request for {}", getWorldPath(LevelResource.ROOT));
         try {
-            i.getSaves().load(getWorldPath(new LevelResource("_sparkplug")));
+            i.getSaves().load(getWorldPath(new LevelResource("lvn")));
         } catch (IOException e) {
-            i.L.error("[mixin:MinecraftServer/createLevels] Could not load LibVilNam data from {} - cannot operate. The game will probably crash now.", getWorldPath(LevelResource.ROOT));
+            i.L.error("[mixin:MinecraftServer/createLevels] Could not load LibVilNam data from {} - cannot operate. The game will probably crash now. More info: {}", getWorldPath(LevelResource.ROOT), e);
             throw new RuntimeException(e);
         }
     }
@@ -35,7 +35,7 @@ public class Lifecycle {
         try {
             i.getSaves().save();
         } catch (IOException e) {
-            i.L.error("[mixin:MinecraftServer/saveAllChunks] Could not save LibVilNam data for {}. You'll probably have to manually fix your file, or have some missing villages!", getWorldPath(LevelResource.ROOT));
+            i.L.error("[mixin:MinecraftServer/saveAllChunks] Could not save LibVilNam data for {}. You'll probably have to manually fix your file, or have some missing villages! More info: {}", getWorldPath(LevelResource.ROOT), e);
         }
     }
 

@@ -82,7 +82,7 @@ public class API {
             var oldVillage = villagesToConquer.getFirst();
             var newVillage = updateVillageSize(oldVillage, combinedBounds);
             if (!Objects.equals(abortedVillage.villageTypeId(), oldVillage.villageTypeId())) newVillage = updateVillageType(newVillage, ResourceLocation.fromNamespaceAndPath(Main.ID, "mixed"));
-            lg.info("[API/placeVillage] Placing a new {} on top on an already existing {} -> Instead, the old village will eat it and from a new {}", abortedVillage, oldVillage, newVillage);
+            lg.info("[API/placeVillage] Placing a new {} on top on an already existing {} -> Instead, the old village will eat it and form a new {} to replace them both", abortedVillage, oldVillage, newVillage);
             return newVillage;
         }
         else{
