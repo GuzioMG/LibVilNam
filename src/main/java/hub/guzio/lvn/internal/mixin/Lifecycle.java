@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 @Mixin(MinecraftServer.class)
-public class Lifecycle {
+class Lifecycle {
     @Inject(at = @At("HEAD"), method = "createLevels")
     protected void createLevels(ChunkProgressListener listener, @NotNull CallbackInfo ci) {
         var i = Main.i();

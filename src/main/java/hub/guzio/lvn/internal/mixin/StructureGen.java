@@ -24,7 +24,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 
 @Mixin(Structure.class)
-public class StructureGen {
+class StructureGen {
     @Inject(at = @At("RETURN"), method = "generate")
     public void generate(RegistryAccess registryAccess, ChunkGenerator chunkGenerator, BiomeSource biomeSource, RandomState randomState, StructureTemplateManager structureTemplateManager, long seed, ChunkPos chunkPos, int references, LevelHeightAccessor levelSize, Predicate<Holder<Biome>> validBiome, @NotNull CallbackInfoReturnable<StructureStart> cir) {
         var that = (Structure) (Object) this;

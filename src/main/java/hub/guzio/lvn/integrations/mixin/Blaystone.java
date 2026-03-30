@@ -1,6 +1,5 @@
 package hub.guzio.lvn.integrations.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import hub.guzio.lvn.integrations.BlaystoneNameGenerator;
 import net.blay09.mods.waystones.worldgen.namegen.*;
 import org.jetbrains.annotations.NotNull;

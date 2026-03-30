@@ -5,7 +5,9 @@
     "minVersion": "0.8",
     "client": [],
     "mixins": [
-        "Blaystone"
+        "Blaystone",
+        "RutAccessor",
+        "RutCore"
     ],
     "injectors": {
         "defaultRequire": 1

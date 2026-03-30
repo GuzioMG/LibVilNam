@@ -6,6 +6,7 @@ import net.blay09.mods.waystones.worldgen.namegen.NameGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -17,7 +18,7 @@ public class BlaystoneNameGenerator implements NameGenerator {
     }
 
     @Override
-    public Optional<Component> generateName(LevelAccessor levelAccessor, Waystone waystone, RandomSource randomSource) {
+    public @NotNull Optional<Component> generateName(LevelAccessor levelAccessor, @NotNull Waystone waystone, RandomSource randomSource) {
         var village = Main.i().getAPI().getVillageByPresenceOrProximity(waystone.getPos(), waystone.getDimension().location(), 300, false);
         if (village.isPresent()) return Optional.of(Component.literal(village.get().name()));
         else return fallback.generateName(levelAccessor, waystone, randomSource);

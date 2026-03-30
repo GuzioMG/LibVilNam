@@ -1,6 +1,5 @@
 package hub.guzio.lvn.internal;
 
-import com.ibm.icu.util.ULocale;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 // An example config class. This is not required, but it's a good idea to have one to keep your config organized.
