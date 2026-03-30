@@ -1,4 +1,4 @@
-package hub.guzio.lvn.mixin;
+package hub.guzio.lvn.internal.mixin;
 
 import net.minecraft.world.level.LevelHeightAccessor;
 import net.minecraft.world.level.chunk.ChunkAccess;

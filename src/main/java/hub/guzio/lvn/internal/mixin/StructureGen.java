@@ -1,4 +1,4 @@
-package hub.guzio.lvn.mixin;
+package hub.guzio.lvn.internal.mixin;
 
 import hub.guzio.lvn.internal.Main;
 import net.minecraft.core.Holder;
@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
+import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -25,7 +26,7 @@ import java.util.function.Predicate;
 @Mixin(Structure.class)
 public class StructureGen {
     @Inject(at = @At("RETURN"), method = "generate")
-    public void generate(RegistryAccess registryAccess, ChunkGenerator chunkGenerator, BiomeSource biomeSource, RandomState randomState, StructureTemplateManager structureTemplateManager, long seed, ChunkPos chunkPos, int references, LevelHeightAccessor levelSize, Predicate<Holder<Biome>> validBiome, CallbackInfoReturnable<StructureStart> cir) {
+    public void generate(RegistryAccess registryAccess, ChunkGenerator chunkGenerator, BiomeSource biomeSource, RandomState randomState, StructureTemplateManager structureTemplateManager, long seed, ChunkPos chunkPos, int references, LevelHeightAccessor levelSize, Predicate<Holder<Biome>> validBiome, @NotNull CallbackInfoReturnable<StructureStart> cir) {
         var that = (Structure) (Object) this;
         var structureId = ResourceLocation.fromNamespaceAndPath(Main.ID, "unknown");
         var maybeStructureId = registryAccess.registry(Registries.STRUCTURE).get().getResourceKey(that);
@@ -44,7 +45,7 @@ public class StructureGen {
         //Dim ID getting - stage one (clearing stupid layers of wrapping from levelSize)
         var level = levelSize;
         if (levelSize instanceof ChunkAccess) level = ((ChunkAccess) level).getLevel();
-        if (Objects.isNull(level) /*getLevel() only works if ChunkAccess is an instance of LevelChunk (else null is returned, like here) - will have to get „creative” for other cases (notably, ProtoChunk, which is what's used for /locate)*/){level = ((ChunkAccessLevelAccessor) levelSize).getLevelHeightAccessor(); IO.println("got here!");}
+        if (Objects.isNull(level) /*getLevel() only works if ChunkAccess is an instance of LevelChunk (else null is returned, like here) - will have to get „creative” for other cases (notably, ProtoChunk, which is what's used for /locate)*/) level = ((ChunkAccessLevelAccessor) levelSize).getLevelHeightAccessor();
         //Dim ID getting - stage two (actually turning a level into a dimension)
         if (level instanceof Level /*Takes care of the vast majority of cases*/) dim = ((Level) level).dimension().location();
         else if (level instanceof ServerLevelAccessor /*Takes care of WorldGenRegion (and technically ServerLevel, but that's already handled above)*/) dim = ((ServerLevelAccessor) level).getLevel().dimension().location();
