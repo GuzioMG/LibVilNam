@@ -7,7 +7,7 @@
     "mixins": [
         "Lifecycle",
         "StructureGen",
-        "StructureManagerLevelAccessor"
+        "ChunkAccessLevelAccessor"
     ],
     "injectors": {
         "defaultRequire": 1

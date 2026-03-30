@@ -39,7 +39,7 @@ public class Lifecycle {
         }
     }
 
-    @Inject(at = @At("RETURN") /*I prefer injecting at HEAD, but in this case, I have to make sure that a call to close() happens AFTER the call to save(), which stopServer() calls via saveAllChunks().*/, method = "stopServer")
+    @Inject(at = @At("RETURN") /*I prefer injecting at HEAD unless I need the return value, but in this case, I have to make sure that a call to close() happens AFTER the call to save(), which stopServer() calls via saveAllChunks().*/, method = "stopServer")
     public void stopServer(CallbackInfo ci) {
         var i = Main.i();
         i.L.info("[mixin:MinecraftServer/stopServer] Got a close request for {}", getWorldPath(LevelResource.ROOT));
