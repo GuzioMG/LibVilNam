@@ -1,6 +1,8 @@
 package hub.guzio.lvn.internal;
 
 import hub.guzio.lvn.API;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
@@ -30,8 +32,9 @@ public class Main {
         L.info("[Main/_] Constructing LibVilNam...");
         if (INSTANCE.isPresent()) throw new IllegalStateException("Attempted to re-initialize an already-started LibVilNam!");
 
-        // Register the commonSetup method for modloading
+        // Register events
         modEventBus.addListener(this::commonSetup);
+        NeoForge.EVENT_BUS.addListener(this::commandSetup);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config file for us
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
@@ -44,6 +47,13 @@ public class Main {
         L.info("[Main/commonSetup] Initializing LibLilNam API...");
         this.API = Optional.of(new StatefulAPI(Config.PADDING.getAsInt(), Config.DO_VILLAGELIKE.getAsBoolean(), Config.DATASET.get(), Config.LANG.get(), L));
         L.info("[Main/commonSetup] Ready to name some villages!");
+    }
+
+    private void commandSetup(@NotNull RegisterCommandsEvent event) {
+        L.info("[Main/commandSetup] Loading commands...");
+        var cmd = new Commands(event.getDispatcher(), L, getAPI());
+        cmd.getVillage();
+        L.info("[Main/commandSetup] All commands up!");
     }
 
     public static @NotNull Main i(){
