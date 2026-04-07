@@ -51,8 +51,9 @@ public class Main {
 
     private void commandSetup(@NotNull RegisterCommandsEvent event) {
         L.info("[Main/commandSetup] Loading commands...");
-        var cmd = new Commands(event.getDispatcher(), L, getAPI());
+        var cmd = new LvnCommands(event.getDispatcher(), L, getAPI());
         cmd.getVillage();
+        cmd.renameVillage();
         L.info("[Main/commandSetup] All commands up!");
     }
 
