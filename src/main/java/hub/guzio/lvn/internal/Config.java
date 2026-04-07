@@ -12,7 +12,7 @@ public class Config {
             .defineInRange("padding", 3, 1, 5);
 
     public static final ModConfigSpec.BooleanValue DO_VILLAGELIKE = BUILDER
-            .comment("Should „village-like” structures (ie. those that generally have some humanoid-ish inhabitants and don't seem like some ancient ruins, such as Woodland Mansions or Bastions) also be given names, or do we only assign names to actual villages? Will look for structures in both #minecraft:village and #lvn:villagelike tags if TRUE, only fot #minecraft:village if FALSE.")
+            .comment("Should „village-like” structures (ie. those that generally have some humanoid-ish inhabitants and don't seem like some ancient ruins, such as Woodland Mansions or Bastions) also be given names, or do we only assign names to actual villages? Will look for structures in both #minecraft:village and #lvn:villagelike tags if TRUE, only for #minecraft:village if FALSE.")
             .define("do_villagelike", true);
 
     public static final ModConfigSpec.ConfigValue<String> DATASET = BUILDER

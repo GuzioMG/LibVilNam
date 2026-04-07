@@ -63,7 +63,6 @@ public class TransitionTest {
 	 */
 	@Test
 	public void check_distribution() {
-		// todo
         UnicodeSet alphabet = LocaleData.getExemplarSet(ULocale.FRENCH, LocaleData.ES_STANDARD);
         Transition transition = new Transition(1.0f/(float)(alphabet.size()), ULocale.FRENCH);
         Set<Character> observed = new HashSet<>();
