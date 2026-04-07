@@ -14,10 +14,10 @@ The cleanup begins with removing the trailing newline. And also any duplicated n
 * newline+` `+newline is replaced with only a single newline
 * ` `+newline is replaced with just a newline
 * newline+` `  is replaced with just a newline
-...because ` ` is *not* a space, so it wasn't registered before. Then another round of deduplication (because having those extra characters may have messed with the site's ability to detect duplicates - and it indeed did, because after pasting it again, the line count fell from 4721 to 4718) and we're DONE! The dataset got cleaned up from 29235 to 4718 entries. This is now usable on https://www.samcodes.co.uk/project/markov-namegen/
+...because ` ` is *not* a space, so it wasn't registered before. Then another round of deduplication (because having those extra characters may have messed with the site's ability to detect duplicates - and it indeed did, because after pasting it again, the line count fell from 4721 to 4718) **and we're DONE!** The dataset got cleaned up from 29235 to 4718 entries. This is now usable on https://www.samcodes.co.uk/project/markov-namegen/
 
 # Stage 5 - SKIE!
-After testing, it revealed a bias towards `-cach`, `-ach` and `-u` and `-ska`. Which is not good, because the 3 first ones are common suffixes for *being in places* not *places themselves*, while the last one is common for street names, not place names. This was corrected with the following replacement chain (same syntax as in Stage 3):
+*Done, huh? Oh, had I wished I were...* After testing, it revealed a bias towards `-cach`, `-ach` and `-u` and `-ska`. Which is not good, because the 3 first ones are common suffixes for *being in places* not *places themselves*, while the last one is common for street names, not place names. This was corrected with the following replacement chain (same syntax as in Stage 3):
 ```
 cach\ ce\
 ku\ ek\
@@ -32,3 +32,24 @@ There was no good way to replace `-ach` because sometimes `i` would fit, while `
 
 # Stage 6 - **WHY???**
 Replaced `(jędrzejowska)` and `(konecka)` with `Jędrzejowska` and `Konecko` because some fucktard at the government put `()` in their dataset for some reason (and `(konecka)` especially had enough of a pull-force (due to 2 other similar places, „Koneck” and „Konecka”) to actually get `(` placed in the generated name list, so I had to clean it up).
+
+# Stage 7 - Observations
+After messing around (or, really, have [Midnight]() mess around) with this generator in prod for a while, we noticed a major issue, ~~ie. the proximity resolver was absolutely fucked, but that's [already fixed]() and also irrelevant to this dataset~~ *there was a strong bias towards `cka` and `ow` endings*. Polish uses `ów` instead of `ow` 99,999% of the time, so I patched that up by doing `ow\ ów\` (again, same syntax as always). Then came the `cka`, which is, uhh... Complicated. Let's just say that about 70% of the time, when it generated, it didn't sound right. It felt more like a street name (because it kinda *was*). So it has to be purged from the set, too. Done the following:
+```
+icka\ iska\
+tecka\ czecko\
+recka\ rzecko\
+żecka\ żecko\
+ecka\ isko\
+iisko\ isko\ #Previous step made some „i” doubled
+cka\ czki\
+```
+
+# Stage 8 - RIP
+I have bad news. After `diff`ing Stage 6 to 7, to see the extent of my changes, I noticed some doubled names. Which means that a yet another round of de-duping will be needed. Which means that we loose the nice'n'round 4096 names. Nooo! And now that there's no nice-and-rounding reason to keep it, we also loose the funny broken names (`Nazwa_samorząd` and `Nazwa_urzędu_jst`). NOO!!! At least there is *also* no reason to keep those short-broken words, too. But that requires some extra action first...
+
+# Stage 9 - *The Pancakeing*
+Every newline was converted to a space. Not only is this something that I have to do, anyway (to paste it to the config), but also I need this to do some regexing. Said regex was ` . ` and ` .. `, to get rid of all (they were replaced with spaces) the random prefixes/suffixes left after human-names were stripped.
+
+# Stage 10 - ...Nevermind!
+Undone newline-to-space. This was done purely to make diffing possible; the actual dataset is the same, and the file that was actually pasted is `stage9.csv`.
