@@ -29,6 +29,7 @@ record LvnCommands(CommandDispatcher<CommandSourceStack> dispatcher, Logger lg, 
             sender.sendSystemMessage(Component.literal(" *  ...Or, combined, you are at (going by proximity-first): "+api.getVillageByProximityOrPresence(coords, dimensionId, radius, getVillageAtAllCost).orElseThrow()));
             sender.sendSystemMessage(Component.literal("/ If any villages above report type lvn:fake, then no village was actually found, and a placeholder name was returned instead /"));
 
+            lg.info("[LvnCommands/getVillage] {} executed {} successfully!", sender.getTextName(), NAME);
             return 0;
         })));
     }
@@ -45,7 +46,8 @@ record LvnCommands(CommandDispatcher<CommandSourceStack> dispatcher, Logger lg, 
             
             if (target.isEmpty()) sender.sendSystemMessage(Component.literal("You need to be INSIDE a village to rename it! If you run /lvn-getvillage, that'd be the 1st village shown."));
             else sender.sendSystemMessage(Component.literal("Renamed "+target.get()+" to "+api.updateVillageName(target.get(), radius)));
-            
+
+            lg.info("[LvnCommands/renameVillage] {} executed {} successfully!", sender.getTextName(), NAME);
             return 0;
         })));
     }
