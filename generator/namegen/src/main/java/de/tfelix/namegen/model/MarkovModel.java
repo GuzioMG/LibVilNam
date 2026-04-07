@@ -89,6 +89,6 @@ public class MarkovModel<R extends Random> implements TrainableModel<R> {
         Transition transition = new Transition(0f, locale, logger);
         transition.update(this.postfix);
         Transition delimiterTransition = transition.build();
-        return new RuntimeModel<>(this.order, this.locale, builtTransitions, delimiterTransition);
+        return new RuntimeModel<>(this.order, builtTransitions, delimiterTransition);
     }
 }

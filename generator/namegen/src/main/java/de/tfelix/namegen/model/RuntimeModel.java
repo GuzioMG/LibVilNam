@@ -1,6 +1,6 @@
 package de.tfelix.namegen.model;
 
-import com.ibm.icu.util.ULocale;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Random;
@@ -20,7 +20,7 @@ public class RuntimeModel<R extends Random> implements Function<R, String> {
     private final Map<String, Transition> transitions;
     private final Transition delimiterTransition;
 
-    public RuntimeModel(int order, ULocale locale, Map<String, Transition> transitions, Transition delimiterTransition) {
+    public RuntimeModel(int order, Map<String, Transition> transitions, Transition delimiterTransition) {
         this.order = order;
         this.transitions = transitions;
         this.prefix = SymbolManager.getStartSymbol(order);
@@ -34,7 +34,7 @@ public class RuntimeModel<R extends Random> implements Function<R, String> {
      * @param context The context string.
      * @return A prepared context string.
      */
-    private String backoff(String context) {
+    private String backoff(@NotNull String context) {
 
         // bring the context to the length of the order.
         if (context.length() > order) {
@@ -44,7 +44,7 @@ public class RuntimeModel<R extends Random> implements Function<R, String> {
         }
 
         // Remove length until we find a categorical.
-        while (!transitions.containsKey(context) && context.length() > 0) {
+        while (!transitions.containsKey(context) && !context.isEmpty()) {
             context = context.substring(1);
         }
 
@@ -82,6 +82,7 @@ public class RuntimeModel<R extends Random> implements Function<R, String> {
      * @return A generated name from the model.
      * @throws RuntimeException if the model hasn't yet been built
      */
+    @Override
     public String apply(R rand) throws RuntimeException {
         StringBuilder sequence = new StringBuilder();
         sequence.append(prefix);
