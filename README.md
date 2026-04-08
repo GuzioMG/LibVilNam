@@ -1,4 +1,6 @@
 # LibVilNam
+Cross-mod village name generation library.
+
 *Welcome to [YOUR VILLAGE NAME HERE], village-chief-sama! UwU*
 
 ## What in the alphabet-soup am I looking at?
