@@ -1,5 +1,5 @@
 package hub.guzio.lvn.integrations.mixin;
-
+/*
 import com.vodmordia.railwaysuntold.worldgen.namegen.BiomeWordPools;
 import com.vodmordia.railwaysuntold.worldgen.namegen.StationNameGenerator;
 import hub.guzio.lvn.internal.Main;
@@ -70,4 +70,4 @@ abstract class RutCore extends SavedData {
 
     @Shadow
     private static String toRoman(int number) { return null; }
-}
+}*/

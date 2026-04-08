@@ -15,7 +15,8 @@
         ]
     },
     "mixins": [
-        "lvn.mixins.json"
+        "lvn.mixins.json",
+        "lvn.integrations.mixins.json"
     ],
     "depends": {
         "fabricloader": ">=${loader_version}",

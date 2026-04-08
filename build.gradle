@@ -23,7 +23,7 @@ repositories {
 }
 
 base {
-    archivesName = mod_id
+    archivesName = mod_id+"-fabric"+project.minecraft_version
 }
 
 dependencies {
@@ -34,8 +34,8 @@ dependencies {
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    implementation "maven.modrinth:waystones:Ayolso4x"
-    implementation "maven.modrinth:railways-untold:F2mCEJfL"
+    modImplementation "maven.modrinth:waystones:hCuFNT3X"
+    //implementation "maven.modrinth:railways-untold:F2mCEJfL"
 }
 
 processResources {

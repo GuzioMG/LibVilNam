@@ -100,7 +100,7 @@ public class Main implements ModInitializer {
         }
 
         try{
-            config_padding = Integer.parseInt(config.getProperty("port"));
+            config_padding = Integer.parseInt(config.getProperty(KEY_PADDING));
         } catch (NumberFormatException e) {
             L.warn("[Main/config] Couldn't read {} value \"{}\" due to the following error:\n{}\nUsing the default value of {} instead.", KEY_PADDING, config.getProperty(KEY_PADDING), e, config_padding);
         }
