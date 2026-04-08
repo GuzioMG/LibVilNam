@@ -1,6 +1,9 @@
 package hub.guzio.lvn.internal;
 
+import com.mojang.brigadier.CommandDispatcher;
 import hub.guzio.lvn.API;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.commands.CommandSourceStack;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,18 +36,20 @@ public class Main implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        L.info("[Main/commonSetup] Registering command event...");
+        CommandRegistrationCallback.EVENT.register(((dispatcher, _, _) -> commandSetup(dispatcher)));
         L.info("[Main/commonSetup] Initializing LibLilNam API...");
         //this.API = Optional.of(new StatefulAPI(Config.PADDING.getAsInt(), Config.DO_VILLAGELIKE.getAsBoolean(), Config.DATASET.get(), Config.LANG.get(), L));
         L.info("[Main/commonSetup] Ready to name some villages!");
     }
 
-    /*private void commandSetup(@NotNull RegisterCommandsEvent event) {
+    private void commandSetup(CommandDispatcher<CommandSourceStack> src) {
         L.info("[Main/commandSetup] Loading commands...");
-        var cmd = new LvnCommands(event.getDispatcher(), L, getAPI());
+        var cmd = new LvnCommands(src, L, getAPI());
         cmd.getVillage();
         cmd.renameVillage();
         L.info("[Main/commandSetup] All commands up!");
-    }*/
+    }
 
     public static @NotNull Main i(){
         if (INSTANCE.isEmpty()) throw new IllegalStateException("Attempted to access LibVilNam prior to its construction.");
