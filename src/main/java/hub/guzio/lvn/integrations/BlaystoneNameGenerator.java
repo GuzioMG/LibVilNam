@@ -19,7 +19,7 @@ public class BlaystoneNameGenerator implements NameGenerator {
 
     @Override
     public @NotNull Optional<Component> generateName(LevelAccessor levelAccessor, @NotNull Waystone waystone, RandomSource randomSource) {
-        var village = Main.i().getAPI().getVillageByPresenceOrProximity(waystone.getPos(), waystone.getDimension().location(), 300, false);
+        var village = Main.i().getAPI().getVillageByPresenceOrProximity(waystone.getPos(), waystone.getDimension().location(), 500, false);
         if (village.isPresent()) return Optional.of(Component.literal(village.get().name()));
         else return fallback.generateName(levelAccessor, waystone, randomSource);
     }

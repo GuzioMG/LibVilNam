@@ -152,7 +152,7 @@ public class API {
         Optional<Village> result = Optional.empty();
         var dist = Double.MAX_VALUE;
         for (var village : getCurrentVillagesInDimension(dimensionId)){
-            var newDist = village.locationXYZ().getCenter().distSqr(coords);
+            var newDist = village.locationXYZ().getCenter().distManhattan(coords);
 
             if ((newDist < dist || result.isEmpty()) && (radius == 0 || newDist <= Math.abs(radius))){
                 result = Optional.of(village);
