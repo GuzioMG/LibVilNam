@@ -1,5 +1,5 @@
 # LibVilNam
-Cross-mod village name generation library.
+Cross-mod village name generation compatibility library.
 
 *Welcome to [YOUR VILLAGE NAME HERE], village-chief-sama! UwU*
 
