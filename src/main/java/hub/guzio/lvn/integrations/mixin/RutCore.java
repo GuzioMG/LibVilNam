@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 abstract class RutCore extends SavedData {
     @Inject(at = @At("HEAD"), method="generateName", cancellable = true)
     public synchronized void generateName(ServerLevel level, BlockPos pos, RandomSource rand, @NotNull CallbackInfoReturnable<String> cir) {
-        var village = Main.i().getAPI().getVillageByPresenceOrProximity(pos, level.dimension().location(), 300, false);
+        var village = Main.i().getAPI().getVillageByPresenceOrProximity(pos, level.dimension().location(), 500, false);
         var baseName = "";
 
         if (village.isPresent()) baseName = village.get().name();
