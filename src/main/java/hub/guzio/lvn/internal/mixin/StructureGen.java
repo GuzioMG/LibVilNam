@@ -10,6 +10,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
@@ -44,11 +45,8 @@ class StructureGen {
         if(!instance.getAPI().testForVillage(structureId, registryAccess)) return;
         //Dim ID getting - stage one (clearing stupid layers of wrapping from levelSize)
         var level = levelSize;
-        /*
-        if (levelSize instanceof ChunkAccess) level = ((ChunkAccess) level).getLevel();
-        if (Objects.isNull(level) /*getLevel() only works if ChunkAccess is an instance of LevelChunk (else null is returned, like here) - will have to get „creative” for other cases (notably, ProtoChunk, which is what's used for /locate)*///) level = ((ChunkAccessLevelAccessor) levelSize).getLevelHeightAccessor();
+        if (level instanceof ProtoChunk) level = ((ChunkAccessLevelAccessor) level).getLevelHeightAccessor();
         //Dim ID getting - stage two (actually turning a level into a dimension)
-
         if (level instanceof Level /*Takes care of the vast majority of cases*/) dim = ((Level) level).dimension().location();
         else if (level instanceof ServerLevelAccessor /*Takes care of WorldGenRegion (and technically ServerLevel, but that's already handled above)*/) dim = ((ServerLevelAccessor) level).getLevel().dimension().location();
         else /*There technically are some other „special snowflakes” from which level extraction is not possible (like PathNavigationRegion, or it's used directly in below-Bedrock retro-gen), tho they're ULTRA-unlikely to find their way here (eg. PathNavigationRegion is used for entity pathfinding (which is needed way after structure-gen), or you're not gonna have retro-gen on a fresh modpack (which is probably the majority of LibVilNam's use-cases), and even if you install it on your forever world for some reason, you're not gonna have village(like)s generate underground unless you also explicitly add Ancient Cities as village-likes or have a datapack that adds underground villages). Still - this is a (very-)edge-case that needs at least a heads-up to the player. And then there's also the fact that WorldGenRegion apparently deprecates its implementation of ServerLevelAccessor? So that could get awkward in the future...*/ instance.L.warn("[mixin:Structure/generate] We're currently trying to generate a {}, but it was not possible to obtain the associated dimension ID, as the level is of type {}. This structure will be assigned to {}.", structureId, level.getClass(), dim);
