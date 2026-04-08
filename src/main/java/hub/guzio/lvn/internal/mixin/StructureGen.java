@@ -10,6 +10,7 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.BiomeSource;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.chunk.ProtoChunk;
 import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
@@ -44,8 +45,7 @@ class StructureGen {
         if(!instance.getAPI().testForVillage(structureId, registryAccess)) return;
         //Dim ID getting - stage one (clearing stupid layers of wrapping from levelSize)
         var level = levelSize;
-        if (levelSize instanceof ChunkAccess) level = ((ChunkAccess) level).getLevel();
-        if (Objects.isNull(level) /*getLevel() only works if ChunkAccess is an instance of LevelChunk (else null is returned, like here) - will have to get „creative” for other cases (notably, ProtoChunk, which is what's used for /locate)*/) level = ((ChunkAccessLevelAccessor) levelSize).getLevelHeightAccessor();
+        if (level instanceof ProtoChunk) level = ((ChunkAccessLevelAccessor) level).getLevelHeightAccessor();
         //Dim ID getting - stage two (actually turning a level into a dimension)
         if (level instanceof Level /*Takes care of the vast majority of cases*/) dim = ((Level) level).dimension().location();
         else if (level instanceof ServerLevelAccessor /*Takes care of WorldGenRegion (and technically ServerLevel, but that's already handled above)*/) dim = ((ServerLevelAccessor) level).getLevel().dimension().location();

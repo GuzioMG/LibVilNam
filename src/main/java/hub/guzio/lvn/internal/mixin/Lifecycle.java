@@ -22,7 +22,7 @@ class Lifecycle {
         var i = Main.i();
         i.L.info("[mixin:MinecraftServer/createLevels] Got a create request for {}", getWorldPath(LevelResource.ROOT));
         try {
-            i.getSaves().load(getWorldPath(new LevelResource("lvn")));
+            i.getSaves().load(getWorldPath(LevelResourceAccessor.New("lvn")));
         } catch (IOException e) {
             i.L.error("[mixin:MinecraftServer/createLevels] Could not load LibVilNam data from {} - cannot operate. The game will probably crash now. More info: {}", getWorldPath(LevelResource.ROOT), e);
             throw new RuntimeException(e);

@@ -1,0 +1,25 @@
+{
+    "schemaVersion": 1,
+    "id": "lvn",
+    "version": "${version}",
+    "name": "LibVilNam",
+    "description": "Cross-mod village name generation compatibility library. „Welcome to [YOUR VILLAGE NAME HERE], village-chief-sama! UwU”",
+    "authors": ["Guzio"],
+    "contact": {},
+    "license": "MIT",
+    "icon": "logo.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "hub.guzio.lvn.internal.Main"
+        ]
+    },
+    "mixins": [
+        "lvn.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=${loader_version}",
+        "fabric-api": "*",
+        "minecraft": "${minecraft_version}"
+    }
+}
